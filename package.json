@@ -1,0 +1,15 @@
+{
+  "name": "pclbot",
+  "version": "0.0.1",
+  "description": "Timer Bot for PCL Tournament drafts. Use !startdraft to begin timer. !choose hero to enter selection. Timer will stop after last pick.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matthew 'mmonney31' Monnie",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.0.0",
+    "discord.js-commando": "^0.8.4"
+  }
+}

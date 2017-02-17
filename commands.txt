@@ -1,0 +1,17 @@
+!ready
+	each team must indicate this once to allow draft to start
+
+!startdraft
+	once teams are ready, this command will begin the draft timer
+
+!ban name
+	team enters the hero they wish to ban
+
+!choose name (name)
+	team enters the hero(s) they are picking, seperated by space
+
+!resume
+	to be used in case of draft fault with failure to lock pick
+
+!reset
+	command will reset all counters and draft status to initial settings.
