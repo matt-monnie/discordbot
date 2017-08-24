@@ -10,7 +10,8 @@ class Stats extends commando.Command {
             name: 'stats',
             group: 'playerstats',
             memberName: 'stats',
-            description: 'Returns stats specific to entered player name'
+            description: 'Returns stats specific to entered player name',
+            examples: ['--stats username']
         });
     }
 

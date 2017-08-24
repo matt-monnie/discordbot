@@ -11,8 +11,7 @@ class Card extends commando.Command {
             group: 'cards',
             memberName: 'card',
             description: 'Returns image for card',
-            examples: ['!card Meltdown', '!card meltdown'],
-            prefix: "-"
+            examples: ['--card Meltdown', '--card meltdown']
         });
     }
 
@@ -28,202 +27,120 @@ function callback(error, response, body) {
    
 if (!error && response.statusCode == 200) {
     var info = JSON.parse(body);
-    var image_url, name, slotType, rarity, affinity, cost, i,
-    maxedEffectType = " ", 
-    maxedEffectType2 = "",
-    maxedEffectValue = " ",
-    maxedEffectValue2 = "",
-    ActiveEffect = "",
-    cooldown = "Passive Effect",
-    effectName = [],
-    effectValue = [],
-    percent = "",
-    percent2 = "",
+    var info2 = "";
+    var info3 = "";
+    var cardname;
+    var image_url, name, trait, rarity, affinity, goldcost, icost, vcost, dcost, i,
+    multi_cards = [], cardidx = 0, ability1 = "", ability2 = "", abildes, abil1name = "", abil2name = "",
+    manacost = "",
+    cooldown = "",
     color,
-    unique ="",
-    unique2 = "",
     cardfound = 0;
     for(var cardnum = 0; cardnum < info.length; cardnum++)
     {
-        //console.log(info[cardnum].name);
-        if(info[cardnum].name.toLowerCase() === args.toLowerCase())
+        cardname = info[cardnum].name.toLowerCase();
+        if(cardname.includes(args.toLowerCase()))
         {
-            cardfound = 1;
-            image_url = "https:" + info[cardnum].images.medium_stats;
-            slotType = info[cardnum].slotType;
-            rarity = info[cardnum].rarity;
-            affinity = info[cardnum].affinities[0];
-            cost = info[cardnum].cost;
-            if(info[cardnum].maxedEffects.length > 0){
-                if(info[cardnum].maxedEffects[0]["unique"] !== undefined)
-                    unique = "(Unique)";
-                if(info[cardnum].maxedEffects[0]["description"] === undefined){
-                maxedEffectType = info[cardnum].maxedEffects[0].stat;
-                maxedEffectValue = info[cardnum].maxedEffects[0].value;
-                if(info[cardnum].maxedEffects.length > 1){
-                if(info[cardnum].maxedEffects[1]["unique"] !== undefined)
-                    unique2 = "(Unique)";
-                maxedEffectType2 = info[cardnum].maxedEffects[1].stat;
-                maxedEffectValue2 = info[cardnum].maxedEffects[1].value;
-                switch(maxedEffectType2){
-                    case "AttackRating":
-                        maxedEffectType2 = " Power";
-                        break;
-                    case "CriticalDamageBonus":
-                        maxedEffectType2 = " Crit Bonus";
-                        maxedEffectValue2 = "100%"
-                        break;
-                    case "CriticalDamageChance":
-                        maxedEffectType2 = " Crit Chance";
-                        maxedEffectValue2 = 100 * maxedEffectValue;
-                        percent2 = "%";
-                        break;
-                    case "EnergyRegenRate":
-                        maxedEffectType2 = " Mana Regen";
-                        break;
-                    case "AttackSpeedRating":
-                        maxedEffectType2 = " Attack Speed";
-                        break;
-                    case "LifeStealRating":
-                        maxedEffectType2 = " LifeSteal";
-                        break;
-                    case "HealthRegenRate":
-                        maxedEffectType2 = " Health Regen";
-                        break;
-                    case "AbilityPenetrationRating":
-                        maxedEffectType2 = " Ability Pen";
-                        break;
-                    case "MaxEnergy":
-                        maxedEffectType2 = " Max Mana";
-                        break;
-                    case "BasicPenetrationRating":
-                        maxedEffectType2 = " Basic Pen";
-                        break;
-                    case "CooldownReductionPercentage":
-                        maxedEffectType2 = " Cooldown Reduction";
-                        maxedEffectValue2 *= 100;
-                        percent2 = "%"
-                        break;
-                    case "AbilityResistanceRating":
-                        maxedEffectType2 = " Ability Armor";
-                        break;
-                    case "BasicResistanceRating":
-                        maxedEffectType2 = " Basic Armor";
-                        break;
-                    default:
-                        maxedEffectType2 = "";
-                        break;
-
-                }
-                }
-                switch(maxedEffectType){
-                    case "AttackRating":
-                        maxedEffectType = "Power";
-                        break;
-                    case "CriticalDamageBonus":
-                        maxedEffectType = "Crit Bonus";
-                        maxedEffectValue = "100%"
-                        break;
-                    case "CriticalDamageChance":
-                        maxedEffectType = "Crit Chance";
-                        maxedEffectValue = 100 * maxedEffectValue;
-                        percent = "%";
-                        break;
-                    case "EnergyRegenRate":
-                        maxedEffectType = "Mana Regen";
-                        break;
-                    case "AttackSpeedRating":
-                        maxedEffectType = "Attack Speed";
-                        break;
-                    case "LifeStealRating":
-                        maxedEffectType = "LifeSteal";
-                        break;
-                    case "HealthRegenRate":
-                        maxedEffectType = "Health Regen";
-                        break;
-                    case "AbilityPenetrationRating":
-                        maxedEffectType = "Ability Pen";
-                        break;
-                    case "MaxEnergy":
-                        maxedEffectType = "Max Mana";
-                        break;
-                    case "BasicPenetrationRating":
-                        maxedEffectType = "Basic Pen";
-                        break;
-                    case "CooldownReductionPercentage":
-                        maxedEffectType = "Cooldown Reduction";
-                        maxedEffectValue *= 100;
-                        percent = "%"
-                        break;
-                    case "AbilityResistanceRating":
-                        maxedEffectType = "Ability Armor";
-                        break;
-                    case "BasicResistanceRating":
-                        maxedEffectType = "Basic Armor";
-                        break;
-                }
-                
-                }
-                else
-                {
-                    maxedEffectType = info[cardnum].maxedEffects[0].description;
-                }
-            }
-            for(i = 0; i < info[cardnum].effects.length; i++)
-            {
-                if(info[cardnum].effects[i]["description"] === undefined){
-                    effectName[i] = info[cardnum].effects[i].stat;
-                    effectValue[i] = info[cardnum].effects[i].value;
-                    
-                }
-                else{
-                    ActiveEffect += info[cardnum].effects[i]["description"];
-                    if(slotType === "Active")
-                        if(info[cardnum].effects[i]["cooldown"] !== undefined)
-                        cooldown = info[cardnum].effects[i]["cooldown"] + " sec";
-                }
-            }
-            switch(affinity){
-                case "Fury":
-                    color = "#cc0000";
-                    break;
-                case "Corruption":
-                    color = "#7e2f8c";
-                    break;
-                case "Intellect":
-                    color = "#0099ff";
-                    break;
-                case "Order":
-                    color = "#ffffcc";
-                    break;
-                case "Growth":
-                    color = "#33cc33";
-                    break;
-            }
-            message.channel.sendEmbed(createEmbed(
-            color, null,
-            info[cardnum].name,
-            slotType + "\r\n" +
-            "Affinity: " + affinity + "\r\n" +
-            "Rarity: " + rarity + "\r\n" +
-            "Cost: " + cost + "\r\n" +
-            "Maxed Effect: " + maxedEffectValue + percent + " " + maxedEffectType + unique + 
-                             " " +  maxedEffectValue2 + percent2 + " " + maxedEffectType2 + unique2 + "\r\n" +
-            "Effect: " + ActiveEffect + "\r\n" +
-            "Cooldown: " + cooldown,
-            null,
-            null,
-            image_url
-            ));
-            cardnum = info.length;
-             maxedEffectType = ""; 
-            maxedEffectType2 = "";
-            maxedEffectValue = "";
-            maxedEffectValue2 = "";
-            ActiveEffect = "";
+            multi_cards[cardidx] = info[cardnum].name;
+            cardfound = cardnum;
+            cardidx++;
         }
-    } 
-    if(cardfound === 0)
+
+    }
+    if(cardidx == 1)
+    {
+        cardnum = cardfound;
+        image_url = "https:" + info[cardnum].levels[9].images.large;
+        rarity = info[cardnum].rarity;
+        affinity = info[cardnum].affinity;
+        goldcost = info[cardnum].goldCost;
+        icost = info[cardnum].intellectGemCost;
+        vcost = info[cardnum].vitalityGemCost;
+        dcost = info[cardnum].dexterityGemCost;
+        trait = info[cardnum].trait;
+        if(trait === "DiscardOnDeath")
+            trait = "Discard On Death";
+        if(trait === "CanNotDiscard")
+            trait = "Cannot Discard";
+        if(info[cardnum].levels[0].basicAttributes === undefined){
+            info2 = "";
+        }
+        else{
+            for(var i = 0; i<info[cardnum].levels[0].basicAttributes.length;i++){
+                info2 += info[cardnum].levels[0].basicAttributes[i].value + " " + info[cardnum].levels[0].basicAttributes[i].name + " ";
+            }
+        }
+        if(info[cardnum].levels[9].abilities === undefined){
+            info3 = "";
+        }
+        else{
+            for(var i = 0; i < info[cardnum].levels[9].abilities.length; i++){
+                var cd = info[cardnum].levels[9].abilities[i].cooldown
+                cd = cd.slice(17);
+                var mc = info[cardnum].levels[9].abilities[i].manacost
+                mc = mc.slice(16)
+                info3 += info[cardnum].levels[9].abilities[i].name + ":\r\n" + info[cardnum].levels[9].abilities[i].description + "\r\nCooldown: " 
+                + cd + "\r\nMana Cost: " + mc
+            }
+        }
+        switch(affinity){
+            case "Chaos":
+                color = "#cc0000";
+                break;
+            case "Death":
+                color = "#7e2f8c";
+                break;
+            case "Knowledge":
+                color = "#0099ff";
+                break;
+            case "Order":
+                color = "#ffffcc";
+                break;
+            case "Growth":
+                color = "#33cc33";
+                break;
+            default:
+                color = "#444444";
+                break;
+        }
+	
+        var desrip = "Affinity: " + affinity + "\r\n" +
+            "Rarity: " + rarity + "\r\n" +
+            "Gold Cost: " + goldcost + "\r\n" +
+            "Trait: " + trait + "\r\n" +
+            "Intellect Gem Cost: " + icost + "\r\n" +
+            "Vitality Gem Cost: " + vcost + "\r\n" +
+            "Agility Gem Cost: " + dcost + "\r\n" +
+            "Basic Attributes: " + info2 +"\r\n" +
+            "Abilities: " + "\r\n" + info3 + "\r\n";
+        var displayname = info[cardnum].name;
+        displayname.fontcolor(color);
+        message.channel.sendEmbed(createEmbed(
+            color, {name: "mmonney31",icon_url:"http://www.pngall.com/wp-content/uploads/2016/05/PayPal-Donate-Button-Download-PNG-180x180.png",url:"https://www.paypal.me/MattMonnie"}
+	    , displayname, 
+            desrip,null,
+            {text: "Bot built by mmonney31 Want to help the bot? Donations help with server and development costs. Simply click on mmonney31 at top to donate."}, image_url, false
+        ));
+        cardnum = info.length;
+    }
+    else if(cardidx > 1)
+    {
+        var card_text = "";
+        for(var idx = 0; idx < multi_cards.length; idx++)
+        {
+            card_text += multi_cards[idx] + " , ";
+        }
+        color = '#47525A';
+        message.channel.sendEmbed(createEmbed(
+        color, null,
+        "Multiple cards found containing: " + args,
+        card_text,
+        null,
+        null,
+        null
+        ));
+    }
+    else
         message.channel.sendMessage(args + " not found");
 
 
@@ -239,5 +156,6 @@ if (!error && response.statusCode == 200) {
 
     }
 }
+
 
 module.exports = Card;

@@ -10,13 +10,16 @@ class StatsHero extends commando.Command {
             name: 'statshero',
             group: 'playerstats',
             memberName: 'statshero',
-            description: 'Returns stats specific to entered player name'
+            description: 'Returns stats specific to entered player name',
+            examples: ['--statshero user,hero', '--statshero mmonney31,riktor']
         });
     }
 
     async run(message, args) {
         let user = args.split(",")[0];
+        if(user[0] === " ") user = user.slice(1);
         let hero = args.slice(user.length + 1);
+        if(hero[0] === " ") hero = hero.slice(1);
         var userid, heroid;
         var options = {
             url: 'https://developer-paragon.epicgames.com/v1/accounts/find/' + user,
@@ -55,12 +58,14 @@ function herostats(error,response,body){
 
 function callbackhero(error,response,body){
     var info2 = JSON.parse(body);
+    var heroname;
     var herofound = 0;
     for(var heronum = 0; heronum < info2.length; heronum++)
     {
-        //console.log(info[cardnum].name);
-        if(info2[heronum].name.toLowerCase() === hero.toLowerCase())
+        heroname = info2[heronum].name.toLowerCase();
+        if(heroname.includes(hero.toLowerCase()))
         {
+            hero = info2[heronum].name;
             herofound = 1;
             heroid = info2[heronum].id;
             heronum = info2.length + 1

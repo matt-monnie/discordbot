@@ -31,20 +31,20 @@ function callback(error, response, body) {
         var cardnamesorder = "";
         var cardnamesuniversal = "";
         for(var i = 0; i < info.length; i++){
-            switch(info[i].affinities[0]){
-                case "Fury":
+            switch(info[i].affinity){
+                case "Chaos":
                     cardnamesfury += info[i].name + "\r\n";
                     break;
                 case "Growth":
                     cardnamesgrowth += info[i].name + "\r\n";
                     break;
-                case "Corruption":
+                case "Death":
                     cardnamescorruption += info[i].name + "\r\n";
                     break;
                 case "Order":
                     cardnamesorder += info[i].name + "\r\n";
                     break;
-                case "Intellect":
+                case "Knowledge":
                     cardnamesintellect += info[i].name + "\r\n";
                     break;  
                 case "Universal":
@@ -54,24 +54,24 @@ function callback(error, response, body) {
         }
         //console.log(cardnames);
         switch(args.toLowerCase()){
-            case "fury":
+            case "chaos":
                 message.channel.sendEmbed(createEmbed(
                     "#cc0000", null,
-                    "Fury Card Names",
+                    "Chaos Card Names",
                     cardnamesfury
                  ));
                  break;
-            case "corruption":
+            case "death":
                 message.channel.sendEmbed(createEmbed(
                     "#7e2f8c", null,
-                    "Corruption Card Names",
+                    "Death Card Names",
                     cardnamescorruption
                 ));
                 break;
-            case "intellect":
+            case "knowledge":
                 message.channel.sendEmbed(createEmbed(
                     "#0099ff", null,
-                    "Intellect Card Names",
+                    "Knowledge Card Names",
                     cardnamesintellect
                 ));
                 break;
@@ -87,13 +87,6 @@ function callback(error, response, body) {
                     "#33cc33", null,
                     "Growth Card Names",
                     cardnamesgrowth
-                ));
-                break;
-            case "universal":
-                message.channel.sendEmbed(createEmbed(
-                    "#ffffff", null,
-                    "Universal Card Names",
-                    cardnamesuniversal
                 ));
                 break;
             default:
