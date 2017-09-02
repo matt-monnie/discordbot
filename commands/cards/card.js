@@ -30,6 +30,7 @@ if (!error && response.statusCode == 200) {
     var info2 = "";
     var info3 = "";
     var cardname;
+    var abillvl = 0;
     var image_url, name, trait, rarity, affinity, goldcost, icost, vcost, dcost, i,
     multi_cards = [], cardidx = 0, ability1 = "", ability2 = "", abildes, abil1name = "", abil2name = "",
     manacost = "",
@@ -50,7 +51,7 @@ if (!error && response.statusCode == 200) {
     if(cardidx == 1)
     {
         cardnum = cardfound;
-        image_url = "https:" + info[cardnum].levels[9].images.large;
+        image_url = "https:" + info[cardnum].levels[0].images.large;
         rarity = info[cardnum].rarity;
         affinity = info[cardnum].affinity;
         goldcost = info[cardnum].goldCost;
@@ -70,16 +71,16 @@ if (!error && response.statusCode == 200) {
                 info2 += info[cardnum].levels[0].basicAttributes[i].value + " " + info[cardnum].levels[0].basicAttributes[i].name + " ";
             }
         }
-        if(info[cardnum].levels[9].abilities === undefined){
+        if(info[cardnum].levels[abillvl].abilities === undefined){
             info3 = "";
         }
         else{
-            for(var i = 0; i < info[cardnum].levels[9].abilities.length; i++){
-                var cd = info[cardnum].levels[9].abilities[i].cooldown
+            for(var i = 0; i < info[cardnum].levels[abillvl].abilities.length; i++){
+                var cd = info[cardnum].levels[abillvl].abilities[i].cooldown
                 cd = cd.slice(17);
-                var mc = info[cardnum].levels[9].abilities[i].manacost
+                var mc = info[cardnum].levels[abillvl].abilities[i].manacost
                 mc = mc.slice(16)
-                info3 += info[cardnum].levels[9].abilities[i].name + ":\r\n" + info[cardnum].levels[9].abilities[i].description + "\r\nCooldown: " 
+                info3 += info[cardnum].levels[abillvl].abilities[i].name + ":\r\n" + info[cardnum].levels[abillvl].abilities[i].description + "\r\nCooldown: " 
                 + cd + "\r\nMana Cost: " + mc
             }
         }

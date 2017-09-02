@@ -62,7 +62,8 @@ class Ability extends commando.Command {
         var scalestr = "", cdstr = "", manastr = "", basedmgstr = "", silencedurstr = "", movespdstr = "", dmgdurstr = "", durstr = "", splitdmgstr = "",
         radiusstr = "", stunstr = "", numatkstr = "", maxhealthpctstr = "", stackstr = "", maxhealthstr = "", rootdr = "", slowlongstr = "", healthregstr = "", cdrstr = "", atkspstr = "",
         manargstr = "", stundrstr = "", bonusdmgstr = "", ultdurstr = "", lifetimestr = "", cooldownstr = "", slowdurationstr = "", airwalkspd = "", airwalkdur = "", markchancestr = "", 
-        shieldstr = "", pingintstr = "", warddurstr = "", stackdurstr = "", stackmaxstr = "", stacknumstr = "", healthpsvstr = "", dmgpsvstr = "", rootshrstr = "", slowsecstr = "";
+        shieldstr = "", pingintstr = "", warddurstr = "", stackdurstr = "", stackmaxstr = "", stacknumstr = "", healthpsvstr = "", dmgpsvstr = "", rootshrstr = "", slowsecstr = "", countstr = "",
+        raddurstr = "", physarstr = "", rangestr = "";
         var atts = {};
         for (var heronum = 0; heronum < info2.length; heronum++)
         {
@@ -80,9 +81,12 @@ class Ability extends commando.Command {
                         {
                             
                             abilinf[i] = JSON.stringify(info2[heronum].abilities[abilnum].modifiersByLevel[i],null,"\t");
-                            scalestr = info2[heronum].abilities[abilnum].modifiersByLevel[i].attackratingcoefficient;
+                            if(info2[heronum].abilities[abilnum].modifiersByLevel[0].attackratingcoefficient == info2[heronum].abilities[abilnum].modifiersByLevel[1].attackratingcoefficient)
+                                scalestr = info2[heronum].abilities[abilnum].modifiersByLevel[i].attackratingcoefficient;
+                            else
+                                scalestr += info2[heronum].abilities[abilnum].modifiersByLevel[i].attackratingcoefficient;
                             if(info2[heronum].abilities[abilnum].modifiersByLevel[i].cooldown !== undefined){
-                            cdstr += info2[heronum].abilities[abilnum].modifiersByLevel[i].cooldown.toFixed(3);
+                            cdstr += info2[heronum].abilities[abilnum].modifiersByLevel[i].cooldown.toFixed(1);
                             passive = 0;}
                             if(info2[heronum].abilities[abilnum].modifiersByLevel[i].energycost !== undefined){
                             manastr += -(info2[heronum].abilities[abilnum].modifiersByLevel[i].energycost);
@@ -124,8 +128,14 @@ class Ability extends commando.Command {
                             dmgpsvstr += info2[heronum].abilities[abilnum].modifiersByLevel[i].damagepassive;
                             rootshrstr += info2[heronum].abilities[abilnum].modifiersByLevel[i].rootshort;
                             slowsecstr += info2[heronum].abilities[abilnum].modifiersByLevel[i].slowsecondary;
+                            countstr += info2[heronum].abilities[abilnum].modifiersByLevel[i].count;
+                            raddurstr += info2[heronum].abilities[abilnum].modifiersByLevel[i].radduration;
+                            physarstr += info2[heronum].abilities[abilnum].modifiersByLevel[i].physarmor;
+                            rangestr += info2[heronum].abilities[abilnum].modifiersByLevel[i].range;
                             if(i<info2[heronum].abilities[abilnum].modifiersByLevel.length-1)
                             {
+                                if(info2[heronum].abilities[abilnum].modifiersByLevel[0].attackratingcoefficient != info2[heronum].abilities[abilnum].modifiersByLevel[1].attackratingcoefficient)
+                                    scalestr += "/";
                                 pingintstr += "/";
                                 warddurstr += "/";
                                 stackmaxstr += "/";
@@ -165,6 +175,10 @@ class Ability extends commando.Command {
                                 dmgpsvstr += "/";
                                 rootshrstr += "/";
                                 slowsecstr += "/";
+                                countstr += "/";
+                                raddurstr += "/";
+                                physarstr += "/";
+                                rangestr += "/";
                             }
                         }
                         if(skill === "lmb") 
@@ -214,6 +228,10 @@ class Ability extends commando.Command {
                         descrip = descrip.replace(/{damagepassive}/g, dmgpsvstr);
                         descrip = descrip.replace(/{rootshort}/g, rootshrstr);
                         descrip = descrip.replace(/{slowsecondary}/g, slowsecstr);
+                        descrip = descrip.replace(/{count}/g, countstr);
+                        descrip = descrip.replace(/{radduration}/g, raddurstr);
+                        descrip = descrip.replace(/{physarmor}/g, physarstr);
+                        descrip = descrip.replace(/{range}/g, rangestr);
                         descrip = descrip.replace(/{attr:endmg}/g, "Ability Damage");
                         descrip = descrip.replace(/{attr:atkspd}/g, "Attack Speed");
                         descrip = descrip.replace(/{attr:mp}/g, "Mana");
@@ -267,6 +285,10 @@ class Ability extends commando.Command {
                         shortdescrip = shortdescrip.replace(/{damagepassive}/g, dmgpsvstr);
                         shortdescrip = shortdescrip.replace(/{rootshort}/g, rootshrstr);
                         shortdescrip = shortdescrip.replace(/{slowsecondary}/g, slowsecstr);
+                        shortdescrip = shortdescrip.replace(/{count}/g, countstr);
+                        shortdescrip = shortdescrip.replace(/{radduration}/g, raddurstr);
+                        shortdescrip = shortdescrip.replace(/{physarmor}/g, physarstr);
+                        shortdescrip = shortdescrip.replace(/{range}/g, rangestr);
                         shortdescrip = shortdescrip.replace(/{attr:endmg}/g, "Ability Damage");
                         shortdescrip = shortdescrip.replace(/{attr:atkspd}/g, "Attack Speed");
                         shortdescrip = shortdescrip.replace(/{attr:mp}/g, "Mana");
