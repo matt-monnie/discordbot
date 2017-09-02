@@ -1,6 +1,6 @@
 const commando = require('discord.js-commando');
 const client = new commando.Client();
-const settings = require('./settings.json');
+global.settings = require('./settings.json');
 const sql = require('mysql');
 
 var http = require('http');

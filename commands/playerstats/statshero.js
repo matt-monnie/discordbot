@@ -25,7 +25,7 @@ class StatsHero extends commando.Command {
             url: 'https://developer-paragon.epicgames.com/v1/accounts/find/' + user,
             setEncoding: 'utf8',
              //This is the only line that is new. `headers` is an object with the headers to request
-            headers: {'X-Epic-ApiKey': '6c9ac24573e1423ab4fd2ef09ce3c167',
+            headers: {'X-Epic-ApiKey': settings.apikey,
                      'Accept': "application/json" }
     };
 
