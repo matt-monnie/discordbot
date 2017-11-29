@@ -19,10 +19,7 @@ client.on('ready', () => {
 });
 
 global.con = sql.createPool({
-    host: "174.138.64.157",
-    user: "root",
-    password: "pens1187",
-    database: "paragon"
+    settings.sqlCon
 });
 
 module.exports = con;
